@@ -6,7 +6,16 @@ class ClassState extends React.Component {
 
     this.state = {
       error: true,
+      loading: false,
     };
+  }
+
+  componentDidUpdate() {
+    if (!!this.state.loading) {
+      setTimeout(() => {
+        this.setState({ loading: true });
+      }, 3000);
+    }
   }
 
   render() {
@@ -18,11 +27,14 @@ class ClassState extends React.Component {
         {!!this.state.error && (
           <p>Error: El codigo es incorrecto</p>
         )}
+        {!!this.state.loading && (
+          <p>Cargando...</p>
+        )}
         <input
           placeholder="Codigo de seguridad"
         />
         <button
-          onClick={() => this.setState(prevState => ({ error: !prevState.error }))}
+          onClick={() => this.setState({ loading: true })}
         >
           Comprobar
         </button>
