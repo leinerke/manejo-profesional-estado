@@ -1,12 +1,20 @@
 import React from "react";
 
+const SECURITY_CODE = "paradigma";
+
 function UseState({ name }) {
-  const [error, setError] = React.useState(true);
+  const [value, setValue] = React.useState("");
+  const [error, setError] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (!!loading) {
       setTimeout(() => {
+        if (value !== SECURITY_CODE) {
+          setError(true);
+        } else if (!!error) {
+          setError(false);
+        }
         setLoading(false);
       }, 3000);
     }
@@ -23,6 +31,8 @@ function UseState({ name }) {
         <p>Cargando...</p>
       )}
       <input
+        value={value}
+        onChange={event => setValue(event.target.value)}
         placeholder="Codigo de seguridad"
       />
       <button
