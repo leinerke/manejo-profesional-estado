@@ -12,6 +12,8 @@ function UseState({ name }) {
       setTimeout(() => {
         if (value !== SECURITY_CODE) {
           setError(true);
+        } else if (!!error) {
+          setError(false);
         }
         setLoading(false);
       }, 3000);

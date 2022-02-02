@@ -1,11 +1,14 @@
 import React from "react";
 
+const SECURITY_CODE = "paradigma";
+
 class ClassState extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      error: true,
+      value: "",
+      error: false,
       loading: false,
     };
   }
@@ -13,7 +16,12 @@ class ClassState extends React.Component {
   componentDidUpdate() {
     if (!!this.state.loading) {
       setTimeout(() => {
-        this.setState({ loading: true });
+        if (this.state.value !== SECURITY_CODE) {
+          this.setState({ error: true });
+        } else if (!!this.state.error) {
+          this.setState({ error: false });
+        }
+        this.setState({ loading: false });
       }, 3000);
     }
   }
@@ -24,14 +32,16 @@ class ClassState extends React.Component {
       <div>
         <h2>Eliminar {name}</h2>
         <p>Por favor escribe el codigo de seguridad</p>
-        {!!this.state.error && (
+        {(!!this.state.error && !this.state.loading) && (
           <p>Error: El codigo es incorrecto</p>
         )}
         {!!this.state.loading && (
           <p>Cargando...</p>
         )}
         <input
+          value={this.state.value}
           placeholder="Codigo de seguridad"
+          onChange={event => this.setState({ value: event.target.value })}
         />
         <button
           onClick={() => this.setState({ loading: true })}
