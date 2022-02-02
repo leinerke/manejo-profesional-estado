@@ -3,40 +3,51 @@ import React from "react";
 const SECURITY_CODE = "paradigma";
 
 function UseState({ name }) {
-  const [value, setValue] = React.useState("");
-  const [error, setError] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [state, setState] = React.useState({
+    value: "",
+    error: false,
+    loading: false,
+  });
 
   React.useEffect(() => {
-    if (!!loading) {
+    if (!!state.loading) {
       setTimeout(() => {
-        if (value !== SECURITY_CODE) {
-          setError(true);
-        } else if (!!error) {
-          setError(false);
+        if (state.value !== SECURITY_CODE) {
+          setState(prevState => ({
+            ...prevState,
+            error: true,
+          }));
+        } else if (!!state.error) {
+          setState(prevState => ({
+            ...prevState,
+            error: false,
+          }));
         }
-        setLoading(false);
+        setState(prevState => ({
+          ...prevState,
+          loading: false,
+        }));
       }, 3000);
     }
-  }, [loading]);
+  }, [state.loading]);
 
   return (
     <div>
       <h2>Eliminar {name}</h2>
       <p>Por favor escribe el codigo de seguridad</p>
-      {(!!error && !loading) && (
+      {(!!state.error && !state.loading) && (
         <p>Error: El codigo es incorrecto</p>
       )}
-      {!!loading && (
+      {!!state.loading && (
         <p>Cargando...</p>
       )}
       <input
-        value={value}
-        onChange={event => setValue(event.target.value)}
+        value={state.value}
+        onChange={event => setState(prevState => ({ ...prevState, value: event.target.value }))}
         placeholder="Codigo de seguridad"
       />
       <button
-        onClick={() => setLoading(true)}
+        onClick={() => setState(prevState => ({ ...prevState, loading: true }))}
       >
         Comprobar
       </button>
