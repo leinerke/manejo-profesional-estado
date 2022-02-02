@@ -12,8 +12,6 @@ function UseState({ name }) {
       setTimeout(() => {
         if (value !== SECURITY_CODE) {
           setError(true);
-        } else if (!!error) {
-          setError(false);
         }
         setLoading(false);
       }, 3000);
@@ -24,7 +22,7 @@ function UseState({ name }) {
     <div>
       <h2>Eliminar {name}</h2>
       <p>Por favor escribe el codigo de seguridad</p>
-      {!!error && (
+      {(!!error && !loading) && (
         <p>Error: El codigo es incorrecto</p>
       )}
       {!!loading && (
